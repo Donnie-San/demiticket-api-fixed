@@ -1,0 +1,6 @@
+@DemiTicket_HostAddress = http://localhost:5206
+
+GET {{DemiTicket_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
