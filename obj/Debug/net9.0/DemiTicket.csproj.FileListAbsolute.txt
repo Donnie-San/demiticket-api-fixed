@@ -145,3 +145,4 @@ C:\Users\donni\Desktop\Projects\DemiTicket\DemiTicket\obj\Debug\net9.0\refint\De
 C:\Users\donni\Desktop\Projects\DemiTicket\DemiTicket\obj\Debug\net9.0\DemiTicket.pdb
 C:\Users\donni\Desktop\Projects\DemiTicket\DemiTicket\obj\Debug\net9.0\DemiTicket.genruntimeconfig.cache
 C:\Users\donni\Desktop\Projects\DemiTicket\DemiTicket\obj\Debug\net9.0\ref\DemiTicket.dll
+C:\Users\donni\Desktop\Projects\DemiTicket\DemiTicket\obj\Debug\net9.0\DemiTicket.sourcelink.json

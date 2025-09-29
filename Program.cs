@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using DemiTicket.Seeding;
 
 
 namespace DemiTicket
@@ -98,6 +99,12 @@ namespace DemiTicket
             app.MapControllers();
 
             app.Run();
+
+            using (var scope = app.Services.CreateScope()) {
+                var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                UserSeeder.Seed(context);
+            }
+
         }
     }
 }
