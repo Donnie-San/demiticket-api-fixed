@@ -30,6 +30,9 @@ namespace DemiTicket
             // Add custom services
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IAdminUserService, AdminUserService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IAuditLogService, AuditLogService>();
 
             // Add CORS policy
             builder.Services.AddCors(options => {

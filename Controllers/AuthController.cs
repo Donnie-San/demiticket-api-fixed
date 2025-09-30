@@ -16,12 +16,14 @@ namespace DemiTicket.Controllers
         private readonly AppDbContext _context;
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
+        private readonly IAuditLogService _auditLogService;
 
-        public AuthController(AppDbContext context, ITokenService tokenService, IEmailService emailService)
+        public AuthController(AppDbContext context, ITokenService tokenService, IEmailService emailService, IAuditLogService auditLogService)
         {
             _context = context;
             _tokenService = tokenService;
             _emailService = emailService;
+            _auditLogService = auditLogService;
         }
 
         [HttpPost("register")]
@@ -52,6 +54,8 @@ namespace DemiTicket.Controllers
             var body = $"Please verify your email by clicking this link: <a href=\"{verificationLink}\">{verificationLink}</a>";
             await _emailService.SendEmailAsync(newUser.Email, "Verify your email", body);
 
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            await _auditLogService.LogAsync(user.Id, "Register", "api/auth/register");
             return Ok("User registed. Please check your email!");
         }
 
@@ -67,6 +71,7 @@ namespace DemiTicket.Controllers
             user.EmailVerificationToken = null;
             await _context.SaveChangesAsync();
 
+            await _auditLogService.LogAsync(user.Id, "Register", "api/auth/verify-email");
             return Ok("Email verified successfully");
         }
 
@@ -74,8 +79,10 @@ namespace DemiTicket.Controllers
         public async Task<IActionResult> Login(UserLoginDto dto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
-            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash)) {
+                await _auditLogService.LogAsync(null, "FailedLogin", "api/auth/login", $"Email: {dto.Email}");
                 return Unauthorized("Invalid credentials!");
+            }
 
             if (!user.IsEmailVerified)
                 return Unauthorized("Please verify your email before logging in.");
@@ -94,8 +101,8 @@ namespace DemiTicket.Controllers
                 RevokedAt = null,
             };
 
-            _context.RefreshTokens.Add(newRefreshToken);
-            _context.SaveChangesAsync();
+            await _context.RefreshTokens.AddAsync(newRefreshToken);
+            await _context.SaveChangesAsync();
 
             Response.Cookies.Append("refresh_token", refreshToken, new CookieOptions {
                 HttpOnly = true,
@@ -104,7 +111,9 @@ namespace DemiTicket.Controllers
                 Expires = DateTime.UtcNow.AddDays(7),
             });
 
-            return Ok(new { 
+            var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
+            await _auditLogService.LogAsync(user.Id, "Login", "api/auth/login", $"IP: {ip}");
+            return Ok(new {
                 accessToken,
                 role = user.Role
             });
@@ -147,6 +156,7 @@ namespace DemiTicket.Controllers
                 Expires = DateTime.UtcNow.AddDays(7),
             });
 
+            await _auditLogService.LogAsync(user.Id, "RefreshToken", "api/auth/refresh");
             return Ok(new {
                 newAccessToken,
                 role = user.Role
@@ -174,6 +184,7 @@ namespace DemiTicket.Controllers
 
             Response.Cookies.Delete("refresh_token");
 
+            await _auditLogService.LogAsync(userId, "Logout", "api/auth/logout");
             return Ok("Logout successful");
         }
     }

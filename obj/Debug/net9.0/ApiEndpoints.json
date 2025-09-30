@@ -1,72 +1,5 @@
 [
   {
-    "ContainingType": "DemiTicket.Controllers.AdminUserController",
-    "Method": "GetUsers",
-    "RelativePath": "api/admin/users",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Page",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "PageSize",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "SortBy",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "SortOrder",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Search",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Role",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "IsRequestingAuthorization",
-        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "IsDeleted",
-        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "DemiTicket.Controllers.AdminUserController",
-    "Method": "GetUserDetail",
-    "RelativePath": "api/admin/users/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Guid",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "DemiTicket.Controllers.AuthController",
     "Method": "Login",
     "RelativePath": "api/auth/login",
@@ -136,8 +69,154 @@
   },
   {
     "ContainingType": "DemiTicket.Controllers.UserController",
+    "Method": "GetUsers",
+    "RelativePath": "api/users/admin",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "SortBy",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SortOrder",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Role",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsRequestingAuthorization",
+        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsDeleted",
+        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DemiTicket.Controllers.UserController",
+    "Method": "GetUserDetail",
+    "RelativePath": "api/users/admin/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DemiTicket.Controllers.UserController",
+    "Method": "HardDelete",
+    "RelativePath": "api/users/admin/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DemiTicket.Controllers.UserController",
+    "Method": "SetAuthorizationRequest",
+    "RelativePath": "api/users/admin/{id}/set-authorization-request",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "DemiTicket.DTOs.AdminSetAuthorizationRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DemiTicket.Controllers.UserController",
+    "Method": "SetDeleted",
+    "RelativePath": "api/users/admin/{id}/set-deleted",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "DemiTicket.DTOs.AdminSetDeletedDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DemiTicket.Controllers.UserController",
+    "Method": "SetRole",
+    "RelativePath": "api/users/admin/{id}/set-role",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "DemiTicket.DTOs.AdminSetRoleDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DemiTicket.Controllers.UserController",
     "Method": "GetUserInfo",
-    "RelativePath": "api/user/me",
+    "RelativePath": "api/users/me",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -147,7 +226,7 @@
   {
     "ContainingType": "DemiTicket.Controllers.UserController",
     "Method": "ChangeAuthorizationRequest",
-    "RelativePath": "api/user/me/change-authorization-request",
+    "RelativePath": "api/users/me/change-authorization-request",
     "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
@@ -163,7 +242,7 @@
   {
     "ContainingType": "DemiTicket.Controllers.UserController",
     "Method": "ChangePassword",
-    "RelativePath": "api/user/me/change-password",
+    "RelativePath": "api/users/me/change-password",
     "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
@@ -179,7 +258,7 @@
   {
     "ContainingType": "DemiTicket.Controllers.UserController",
     "Method": "ChangeUsername",
-    "RelativePath": "api/user/me/change-username",
+    "RelativePath": "api/users/me/change-username",
     "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,

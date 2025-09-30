@@ -1,26 +1,16 @@
 ﻿using DemiTicket.Data;
 using DemiTicket.DTOs;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace DemiTicket.Controllers
+namespace DemiTicket.Services
 {
-    [Authorize(Roles = "Admin")]
-    [Route("api/admin/users")]
-    [ApiController]
-    public class AdminUserController : ControllerBase
+    public class AdminUserService : IAdminUserService
     {
         private readonly AppDbContext _context;
 
-        public AdminUserController(AppDbContext context)
-        {
-            _context = context;
-        }
+        public AdminUserService(AppDbContext context) => _context = context;
 
-        [HttpGet]
-        public async Task<IActionResult> GetUsers([FromQuery] AdminUserQueryDto query)
+        public async Task<PaginatedResult<AdminUserListItemDto>> GetUsers(AdminUserQueryDto query)
         {
             var usersQuery = _context.Users.AsQueryable();
 
@@ -56,25 +46,21 @@ namespace DemiTicket.Controllers
                 })
                 .ToListAsync();
 
-            var result = new PaginatedResult<AdminUserListItemDto> {
+            return new PaginatedResult<AdminUserListItemDto> {
                 Items = items,
                 Page = query.Page,
                 PageSize = query.PageSize,
                 TotalItems = totalItems,
                 TotalPages = (int)Math.Ceiling(totalItems / (double)query.PageSize)
             };
-
-            return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserDetail([FromRoute] Guid id)
+        public async Task<AdminUserDetailDto> GetUserDetail(Guid id)
         {
             var user = await _context.Users.FindAsync(id);
-            if (user == null)
-                return NotFound("User not found");
+            if (user == null) throw new Exception("User not found");
 
-            var dto = new AdminUserDetailDto {
+            return new AdminUserDetailDto {
                 Id = user.Id,
                 Username = user.Username,
                 Email = user.Email,
@@ -85,9 +71,46 @@ namespace DemiTicket.Controllers
                 LastLogin = user.LastLogin,
                 IsDeleted = user.IsDeleted
             };
-
-            return Ok(dto);
         }
 
+        public async Task SetRole(Guid id, string newRole)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                throw new Exception("User not found");
+
+            user.Role = newRole;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SetAuthorizationRequest(Guid id, bool isRequestingAuthorization)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                throw new Exception("User not found");
+
+            user.IsRequestingAuthorization = isRequestingAuthorization;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SetDeleted(Guid id, bool isDelete)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                throw new Exception("User not found");
+
+            user.IsDeleted = isDelete;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task HardDelete(Guid id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                throw new Exception("User not found");
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+        }
     }
 }

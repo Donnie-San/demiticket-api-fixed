@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DemiTicket")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9364decdf70675fd9510bf4f0ed086fbdad31fdc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+09096b4e8fe1640b18bc3af951d365ea9b89ce23")]
 [assembly: System.Reflection.AssemblyProductAttribute("DemiTicket")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DemiTicket")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
